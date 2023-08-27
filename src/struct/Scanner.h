@@ -8,7 +8,7 @@
 #endif
 
 
-#include "generated/parser.tab.h"
+#include "struct/parser.tab.h"
 //#include "location.hh"
 
 namespace yy_struct {

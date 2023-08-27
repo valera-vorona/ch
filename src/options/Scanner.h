@@ -7,7 +7,7 @@
 #include <FlexLexer.h>
 #endif
 
-#include "generated/parser.tab.h"
+#include "options/parser.tab.h"
 //#include "location.hh"
 
 namespace yy_options {
@@ -21,7 +21,7 @@ public:
    };
   
    //get rid of override virtual function warning
-//   using FlexLexer::yylex;
+   //using FlexLexer::yylex;
 
    virtual
    int yylex( Parser::semantic_type * const lval, 
