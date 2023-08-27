@@ -43,6 +43,7 @@ run
 # Generated files
 data/
 doc/
+generated/
 *.info
 *.data
 

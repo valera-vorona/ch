@@ -1,0 +1,7 @@
+cpp _default {
+    path = cpp
+    class {
+        path = class
+    }
+}
+

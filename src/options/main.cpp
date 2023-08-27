@@ -1,7 +1,6 @@
 #include <string>
 #include <iostream>
-#include "options/Driver.h"
-#include "struct/Driver.h"
+#include "Driver.h"
 
 struct Options {
     enum {
@@ -55,11 +54,9 @@ int main(int argc, char *argv[]) {
 
     o.run();
 
-    yy_options::Driver odriver;
-    odriver.parse("../assets/template.class.h");    
-    
-    yy_struct::Driver sdriver;
-    sdriver.parse("../assets/struct.txt");    
+    yy::Driver driver;
+    driver.parse("../assets/template.class.h");    
+    //driver.parse("main.cpp");    
 
     std::cout << "Bye" << std::endl;
 
