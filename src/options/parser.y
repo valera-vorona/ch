@@ -41,64 +41,34 @@
 %define api.value.type variant
 %define parse.assert
 
-%token               UNKNOWN
 %token               END    0     "end of file"
-%token               CMD_BEGIN
-%token               CMD_END
-%token               PRINT
-%token <std::string> WORD
-%token               NEWLINE
-%token <char>        CHAR
+%token <std::string> STRING
 
 %locations
 
 %%
 
 all: END
-    | inputs END
+    | exprs END
     ;
 
-inputs: input
-    | inputs input
+exprs: expr
+    | exprs expr
     ;
 
-input: chars
-    | CMD_BEGIN commands CMD_END
-    | CMD_BEGIN CMD_END
+expr: STRING {
+        driver.find($1);
+    }
+    | STRING '=' STRING {
+        driver.set_variable($1, $3);
+    }
     ;
 
-chars: CHAR { std::cout << $1; }
-    | chars CHAR { std::cout << $2; }
-    ;
-
-commands: command
-    | commands command
-    ;
-
-command: PRINT { std::cout << "PRINT" << std::endl; }
-    ;
-
-/*list_option : END | list END;
-
-list
-  : item
-  | list item
-  ;
-
-item
-  : UPPER   { driver.add_upper(); }
-  | LOWER   { driver.add_lower(); }
-  | WORD    { driver.add_word( $1 ); }
-  | NEWLINE { driver.add_newline(); }
-  | CHAR    { driver.add_char(); }
-  ;
-*/
 %%
-
 
 void 
 yy_options::Parser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << "\n";
+   std::cerr << "Options parser error: " << err_message << " at " << l << "\n";
 }
 

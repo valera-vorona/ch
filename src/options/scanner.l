@@ -27,37 +27,17 @@ using token = yy_options::Parser::token;
 %option noyywrap
 %option c++
 
-CMD_BEGIN <<<
-CMD_END   >>>
-SPACE (\ |\t)
-
-%s parsing
+STRING [^=\n]+
 
 %%
 
-%{          /** Code executed at the beginning of yylex **/
-            yylval = lval;
+%{                      /** Code executed at the beginning of yylex **/
+                        yylval = lval;
 %}
 
-<INITIAL>{CMD_BEGIN}    std::cout << "LEX BEGIN" << std:: endl; BEGIN(parsing); return token::CMD_BEGIN; /* begin parsing */
-
-<INITIAL>\n             {
-                            loc->lines(); // update line number
-                            yylval->emplace<char>('\n');
-                            return token::CHAR; /* pass through all the characters */
-                        }
-
-<INITIAL>.              {
-                            //std::cout << *yytext;
-                            yylval->emplace<char>(*yytext);
-                            return token::CHAR; /* pass through all the characters */
-                        }
-
-<parsing>{CMD_END}      std::cout << "LEX END" << std::endl; BEGIN(INITIAL); return token::CMD_END; /* finish parsing */
-<parsing>\n             loc->lines(); // update line number
-<parsing>{SPACE}+       { }
-<parsing>=              return token::PRINT;
-<parsing>.              return token::UNKNOWN;
+=                       return '='; 
+\n                      loc->lines(); // update line number
+{STRING}                std::cout << yytext << std::endl; yylval->emplace<std::string>(yytext); return token::STRING;
 
 %%
 

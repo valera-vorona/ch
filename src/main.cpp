@@ -1,68 +1,26 @@
-#include <string>
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include "options/Driver.h"
 #include "struct/Driver.h"
 
-struct Options {
-    enum {
-        CREATE
-    } cmd;
-
-    enum {
-        CLASS
-    } what;
-
-    void run();
-
-private:
-    void create();
-};
-
-void Options::run() {
-    switch (cmd) {
-        case CREATE:
-            create();
-            break;
-    }
-}
-
-void Options::create() {
-    switch (what) {
-        case CLASS:
-            break;
-    }
-}
-
 int main(int argc, char *argv[]) {
-    using namespace std;
+    std::stringstream options;
 
-    Options o;
-
-    for (int i=1; i< argc; ++i) {
-        cout << argv[i] << endl;
-    }
-
-    if (argc > 2) {
-        if ("create" == argv[1]) {
-            o.cmd = o.CREATE;
-            if (argc > 3) {
-                if ("class" == argv[2]) {
-                    o.what = o.CLASS;
-                }
-            }
+    for (int i=1; i < argc; ++i) {
+        options << argv[i];
+        if (argc - i > 1) {
+            options << '\n';
         }
     }
 
-    o.run();
+    std::ifstream fstruct("../assets/struct.txt");
+    yy_struct::Driver struct_driver;
+    struct_driver.parse(fstruct);
 
-    yy_options::Driver odriver;
-    odriver.parse("../assets/template.class.h");    
+    yy_options::Driver options_driver(struct_driver.get_current());
+    options_driver.parse(options);
     
-    yy_struct::Driver sdriver;
-    sdriver.parse("../assets/struct.txt");    
-
-    std::cout << "Bye" << std::endl;
-
-    return 0;
+    return EXIT_SUCCESS;
 }
 

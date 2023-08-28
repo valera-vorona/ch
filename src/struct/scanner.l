@@ -34,18 +34,23 @@ WORD    {LETTER}{SYM}*
 SPACE   [\t ]
 EOL     \r?\n
 
+%x comment
+
 %%
 
 %{          /** Code executed at the beginning of yylex **/
             yylval = lval;
 %}
 
-_default                std::cout << "DEFAULT" << std::endl; return token::DEFAULT;
+#                       BEGIN(comment); /* one line comment */
+<comment>.              { /* pass */ }
+<comment>\n             loc->lines(); BEGIN(INITIAL);
+_default                return token::DEFAULT;
 path                    return token::PATH;
-{WORD}                  std::cout << "WORD: " << yytext << std::endl; yylval->emplace<std::string>(yytext); return token::WORD;
-=                       std::cout << '=' << std::endl; return '='; 
-\{                      std::cout << '{' << std::endl; return '{'; 
-\}                      std::cout << '}' << std::endl; return '}'; 
+{WORD}                  yylval->emplace<std::string>(yytext); return token::WORD;
+=                       return '=';
+\{                      return '{';
+\}                      return '}';
 .                       /* pass */
 \n                      loc->lines(); // update line number
 

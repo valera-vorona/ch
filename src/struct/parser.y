@@ -54,17 +54,17 @@
 
 %%
 
-all: END
-    | exprs END
+all: exprs END
     ;
 
-exprs: expr
+exprs: %empty
+    | expr
     | exprs expr
     ;
 
-expr: WORD mb_default {
+expr: WORD {
         driver.push_new_child($1);
-    } '{' exprs '}' {
+    } mb_default '{' exprs '}' {
         driver.pop_child();
     }
     | PATH '=' string {
@@ -77,7 +77,9 @@ string: STRING
     ;
 
 mb_default: %empty
-    | DEFAULT
+    | DEFAULT {
+        driver.set_default();
+    }
     ;
 
 %%
@@ -85,6 +87,6 @@ mb_default: %empty
 void 
 yy_struct::Parser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << "\n";
+   std::cerr << "Struct parsr error: " << err_message << " at " << l << "\n";
 }
 
