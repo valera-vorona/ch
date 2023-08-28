@@ -1,4 +1,4 @@
-project(struct VERSION 0.0.1 LANGUAGES CXX)
+project(template VERSION 0.0.1 LANGUAGES CXX)
 
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
