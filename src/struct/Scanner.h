@@ -8,13 +8,14 @@
 #endif
 
 #include "struct/parser.tab.h"
+#include <memory>
 
 namespace yy_struct {
 
     class Scanner : public yyFlexLexer {
     public:
-        Scanner(std::istream *in) : yyFlexLexer(in) {
-            loc = new Parser::location_type();
+        Scanner(std::istream *in) : yyFlexLexer(in), location(std::make_unique<Parser::location_type>()) {
+
         }
   
         /* virtual */
@@ -28,7 +29,7 @@ namespace yy_struct {
         Parser::semantic_type *yylval = nullptr;
 
         /* location ptr */
-        Parser::location_type *loc    = nullptr;
+        std::unique_ptr<Parser::location_type> location;
     };
 
 }

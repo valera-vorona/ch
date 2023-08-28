@@ -1,7 +1,13 @@
+# This is the main structure file for ch unility
+
 cpp _default {
-    path = cpp
-    class {
-        path = class
+    path = cpdp
+    path = cg
+    create {
+        path = crate
+        class {
+
+        }
     }
 }
 

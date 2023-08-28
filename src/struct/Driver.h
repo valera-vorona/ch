@@ -16,7 +16,7 @@ namespace yy_struct {
     public:
         Driver();
 
-        virtual ~Driver();
+        ~Driver() = default;
 
     /**
         * parse - parse from a c++ input stream
@@ -32,16 +32,15 @@ namespace yy_struct {
 
         void set_default();
 
-        std::stack<std::shared_ptr<Node>> stack;
 
         std::ostream& print(std::ostream &stream);
 
     private:
 
-        void parse_helper( std::istream &stream );
+        std::stack<std::shared_ptr<Node>> stack;
 
-        Parser  *parser  = nullptr;
-        Scanner *scanner = nullptr;
+        std::unique_ptr<Scanner> scanner;
+        std::unique_ptr<Parser> parser;
     };
 
 }

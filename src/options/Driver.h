@@ -6,8 +6,9 @@
 #include "../struct/Node.h"
 
 #include <unordered_map>
+#include <memory>
 #include <string>
-#include <istream>
+#include <iostream>
 
 namespace yy_options {
 
@@ -15,7 +16,7 @@ namespace yy_options {
     public:
         Driver(std::shared_ptr<yy_struct::Node> structure);
 
-        virtual ~Driver();
+        ~Driver() = default;
 
         /** 
         * parse - parse from a c++ input stream
@@ -30,10 +31,9 @@ namespace yy_options {
         std::ostream& print(std::ostream &stream);
 
     private:
-        void parse_helper( std::istream &stream );
 
-        Parser  *parser  = nullptr;
-        Scanner *scanner = nullptr;
+        std::unique_ptr<Scanner> scanner;
+        std::unique_ptr<Parser> parser;
    
         std::shared_ptr<yy_struct::Node> structure;
 

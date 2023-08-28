@@ -5,7 +5,7 @@
 /* Implementation of yyFlexScanner */ 
 #include "Scanner.h"
 #undef  YY_DECL
-#define YY_DECL int yy_options::Scanner::yylex(yy_options::Parser::semantic_type * const lval, yy_options::Parser::location_type *location)
+#define YY_DECL int yy_options::Scanner::yylex(yy_options::Parser::semantic_type *const lval, yy_options::Parser::location_type *location)
 
 /* using "token" to make the returns for the tokens shorter to type */
 using token = yy_options::Parser::token;
@@ -17,7 +17,7 @@ using token = yy_options::Parser::token;
 #define YY_NO_UNISTD_H
 
 /* update location on matching */
-#define YY_USER_ACTION loc->step(); loc->columns(yyleng);
+#define YY_USER_ACTION location->step(); location->columns(yyleng);
 %}
 
 %option debug
@@ -36,7 +36,7 @@ STRING [^=\n]+
 %}
 
 =                       return '='; 
-\n                      loc->lines(); // update line number
+\n                      location->lines(); // update line number
 {STRING}                std::cout << yytext << std::endl; yylval->emplace<std::string>(yytext); return token::STRING;
 
 %%

@@ -6,47 +6,12 @@ namespace yy_struct {
         stack.push(std::make_shared<Node>());
     }
 
-    Driver::~Driver() {
-        delete(scanner);
-        scanner = nullptr;
-        delete(parser);
-        parser = nullptr;
-    }
-
     void Driver::parse(std::istream &stream) {
-        if(! stream.good() && stream.eof()) {
-            return;
-        }
+        scanner = std::make_unique<Scanner>(&stream);
+        parser = std::make_unique<Parser>(*scanner.get(), *this);
 
-        parse_helper(stream);
-    }
-
-    void Driver::parse_helper(std::istream &stream) {
-        delete(scanner);
-
-        try {
-            scanner = new Scanner(&stream);
-        } catch( std::bad_alloc &ba ) {
-            std::cerr << "Failed to allocate scanner: (" <<
-            ba.what() << "), exiting!!\n";
-            exit( EXIT_FAILURE );
-        }
-
-        delete(parser);
-
-        try {
-            parser = new Parser( (*scanner) /* scanner */, 
-                                  (*this) /* driver */ );
-        }
-
-        catch( std::bad_alloc &ba ) {
-            std::cerr << "Failed to allocate parser: (" << 
-            ba.what() << "), exiting!!\n";
-            exit( EXIT_FAILURE );
-        }
-
-        const int accept( 0 );
-        if (parser->parse() != accept) {
+        if (parser->parse() != 0) {
+            //TODO: make some other error reaction
             std::cerr << "Parse failed!!\n";
         }
     }
