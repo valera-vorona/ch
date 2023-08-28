@@ -21,13 +21,23 @@ using token = yy_template::Parser::token;
 %}
 
 %option debug
-%option nodefault
+    /* %option nodefault - don't use nodefault in this scanner to make the scanner pass through unknown tokens */
 %option yyclass="yy_options::Scanner"
-%option prefix="Options"
+%option prefix="Template"
 %option noyywrap
 %option c++
 
-STRING [^=\n]+
+BEGIN  <<<
+END    >>>
+
+DIGIT   [0-9]
+LETTER  [a-zA-Z_]
+SYM     ({DIGIT}|{LETTER})
+STRING  {LETTER}{SYM}*
+SPACE   [\t \r\n]
+
+%x parcing
+%x comment
 
 %%
 
@@ -35,9 +45,21 @@ STRING [^=\n]+
                         yylval = lval;
 %}
 
-=                       return '='; 
-\n                      location->lines(); // update line number
-{STRING}                std::cout << yytext << std::endl; yylval->emplace<std::string>(yytext); return token::STRING;
+<INITIAL>{BEGIN}        BEGIN(parcing);
+<INITIAL>\n             location->lines(); yyout << '\n';
+
+<comment>{END}          BEGIN(INITIAL);
+<comment>\n             location->lines();
+<comment>.              /* eat */
+
+<parcing>{END}          BEGIN(INITIAL);
+<parcing>#              BEGIN(comment);
+<parcing>\{             return token::BEGIN_BLOCK;
+<parcing>\}             return token::END_BLOCK;
+
+<parcing>{STRING}       yylval->emplace<std::string>(yytext); return token::STRING;
+<parcing>{SPACE}        /* pass */
+<parcing>.              yylval->emplace<std::string>(yytext); return token::UNKNOWN;
 
 %%
 

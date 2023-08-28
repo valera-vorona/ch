@@ -25,7 +25,7 @@ namespace yy_struct {
         // Method body created by flex in lexer.yy.cpp
 
     private:
-        /* yyval ptr */
+        /* yylval ptr */
         Parser::semantic_type *yylval = nullptr;
 
         /* location ptr */

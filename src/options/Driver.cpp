@@ -37,6 +37,11 @@ namespace yy_options {
         variables[name] = value;
     }
 
+    std::string Driver::get_variable(const std::string &name) const {
+        auto kv = variables.find(name);
+        return kv == variables.end() ? std::string() : kv->second;
+    }
+
     std::ostream& Driver::print(std::ostream &stream) {
         return(stream);
     }

@@ -2,7 +2,7 @@
 
 namespace yy_template {
 
-    Driver::Driver(std::shared_ptr<yy_struct::Node> structure) : structure(structure) {
+    Driver::Driver(const yy_options::Driver *options) : options(options) {
 
     }
 

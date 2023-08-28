@@ -4,6 +4,7 @@
 #include "Scanner.h"
 #include "parser.tab.h"
 #include "../struct/Node.h"
+#include "../options/Driver.h"
 
 #include <unordered_map>
 #include <memory>
@@ -14,7 +15,7 @@ namespace yy_template {
 
     class Driver {
     public:
-        Driver(std::shared_ptr<yy_struct::Node> structure);
+        Driver(const yy_options::Driver *options);
 
         ~Driver() = default;
 
@@ -29,6 +30,8 @@ namespace yy_template {
         void set_variable(const std::string &name, const std::string &value);
 
         std::ostream& print(std::ostream &stream);
+
+        const yy_options::Driver *options;
 
     private:
 

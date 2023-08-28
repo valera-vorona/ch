@@ -1,67 +1,22 @@
-#include <string>
-#include <iostream>
-#include "Driver.h"
+<<< # cpp class header file template >>>
+#ifndef __<<<namespace>>>_<<<class>>>__
+#define __<<<namespace>>>_<<<class>>>__
 
-struct Options {
-    enum {
-        CREATE
-    } cmd;
+namespace <<<namespace>>> {
 
-    enum {
-        CLASS
-    } what;
+    class <<<class>>> {
+    public:
 
-    void run();
+        <<<class>>>() {
 
-private:
-    void create();
-};
-
-<<< == >>>
-
-void Options::run() {
-    switch (cmd) {
-        case CREATE:
-            create();
-            break;
-    }
-}
-
-void Options::create() {
-    switch (what) {
-        case CLASS:
-            break;
-    }
-}
-
-int main(int argc, char *argv[]) {
-    using namespace std;
-
-    Options o;
-
-    for (int i=1; i< argc; ++i) {
-        cout << argv[i] << endl;
-    }
-
-    if (argc > 2) {
-        if ("create" == argv[1]) {
-            o.cmd = o.CREATE;
-            if (argc > 3) {
-                if ("class" == argv[2]) {
-                    o.what = o.CLASS;
-                }
-            }
         }
-    }
 
-    o.run();
+        virtual ~<<<class>>>() {
 
-    yy::Driver driver;
-    driver.parse("../assets/template.class.h");    
-    //driver.parse("main.cpp");    
+        }
+    };
 
-    std::cout << "Bye" << std::endl;
-
-    return 0;
 }
+
+#undef /* __<<<namespace>>>_<<<class>>>__ */
 

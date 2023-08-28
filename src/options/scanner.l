@@ -37,7 +37,7 @@ STRING [^=\n]+
 
 =                       return '='; 
 \n                      location->lines(); // update line number
-{STRING}                std::cout << yytext << std::endl; yylval->emplace<std::string>(yytext); return token::STRING;
+{STRING}                yylval->emplace<std::string>(yytext); return token::STRING;
 
 %%
 

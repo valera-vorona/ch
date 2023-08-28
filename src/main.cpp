@@ -3,6 +3,7 @@
 #include <fstream>
 #include "options/Driver.h"
 #include "struct/Driver.h"
+#include "template/Driver.h"
 
 int main(int argc, char *argv[]) {
     std::stringstream options;
@@ -20,6 +21,10 @@ int main(int argc, char *argv[]) {
 
     yy_options::Driver options_driver(struct_driver.get_current());
     options_driver.parse(options);
+
+    std::ifstream ftemplate("../assets/template.class.h");
+    yy_template::Driver template_driver(&options_driver);
+    template_driver.parse(ftemplate);
     
     return EXIT_SUCCESS;
 }

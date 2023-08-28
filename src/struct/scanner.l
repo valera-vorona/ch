@@ -31,8 +31,6 @@ DIGIT   [0-9]
 LETTER  [a-zA-Z_]
 SYM     ({DIGIT}|{LETTER})
 WORD    {LETTER}{SYM}*
-SPACE   [\t ]
-EOL     \r?\n
 
 %x comment
 

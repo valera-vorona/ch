@@ -41,8 +41,11 @@
 %define api.value.type variant
 %define parse.assert
 
-%token               END    0     "end of file"
-%token <std::string> STRING
+%token                  END    0     "end of file"
+%token                  UNKNOWN
+%token                  BEGIN_BLOCK
+%token                  END_BLOCK
+%token <std::string>    STRING
 
 %locations
 
@@ -57,10 +60,14 @@ exprs: expr
     ;
 
 expr: STRING {
-        driver.find($1);
+        auto value = driver.options->get_variable($1);
+        scanner.print(value);
     }
-    | STRING '=' STRING {
-        driver.set_variable($1, $3);
+    | BEGIN_BLOCK {
+        //driver.set_variable($1, $3);
+    }
+    | END_BLOCK {
+
     }
     ;
 

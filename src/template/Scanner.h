@@ -15,7 +15,7 @@ namespace yy_template {
     class Scanner : public yyFlexLexer {
     public:
    
-        Scanner(std::istream *in) : yyFlexLexer(in), location(std::make_unique<Parser::location_type>()) {
+        Scanner(std::istream *in, std::ostream *out = nullptr) : yyFlexLexer(in, out), location(std::make_unique<Parser::location_type>()) {
 
         }
 
@@ -25,8 +25,13 @@ namespace yy_template {
         // YY_DECL defined in scanner.l
         // Method body created by flex in lexer.yy.cpp
 
+        template <typename T>
+        void print(T value) {
+            yyout << value;
+        }
+
     private:
-        /* yyval ptr */
+        /* yylval ptr */
         Parser::semantic_type *yylval = nullptr;
 
         /* location ptr */

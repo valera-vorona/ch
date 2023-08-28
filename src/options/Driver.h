@@ -28,6 +28,8 @@ namespace yy_options {
 
         void set_variable(const std::string &name, const std::string &value);
 
+        std::string get_variable(const std::string &name) const;
+
         std::ostream& print(std::ostream &stream);
 
     private:
