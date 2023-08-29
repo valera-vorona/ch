@@ -2,7 +2,7 @@
 
 namespace yy_template {
 
-    Driver::Driver(const yy_options::Driver *options) : options(options) {
+    Driver::Driver(yy_options::Driver *options) : options(options) {
 
     }
 
@@ -33,8 +33,11 @@ namespace yy_template {
     }
 
     void Driver::set_variable(const std::string &name, const std::string &value) {
-        //TODO: check if this vaiable already exists
-        variables[name] = value;
+        options->set_variable(name, value);
+    }
+
+    std::string Driver::get_variable(const std::string &name) const {
+        return options->get_variable(name);
     }
 
     std::ostream& Driver::print(std::ostream &stream) {

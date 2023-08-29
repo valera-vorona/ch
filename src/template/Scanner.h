@@ -27,7 +27,25 @@ namespace yy_template {
 
         template <typename T>
         void print(T value) {
-            yyout << value;
+            if (_blocked == false) {
+                yyout << value;
+            }
+        }
+
+        void block() {
+            _blocked = true;
+        }
+
+        void unblock() {
+            _blocked = false;
+        }
+
+        bool blocked() const {
+            return _blocked;
+        }
+
+        void toggle() {
+            _blocked = !_blocked;
         }
 
     private:
@@ -36,6 +54,8 @@ namespace yy_template {
 
         /* location ptr */
         std::unique_ptr<Parser::location_type> location;
+
+        bool _blocked = false;
     };
 
 }

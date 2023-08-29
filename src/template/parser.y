@@ -43,8 +43,10 @@
 
 %token                  END    0     "end of file"
 %token                  UNKNOWN
-%token                  BEGIN_BLOCK
-%token                  END_BLOCK
+%token                  IF
+%token                  UNLESS
+%token                  ELSE
+%token                  UPPER
 %token <std::string>    STRING
 
 %locations
@@ -59,15 +61,40 @@ exprs: expr
     | exprs expr
     ;
 
-expr: STRING {
-        auto value = driver.options->get_variable($1);
-        scanner.print(value);
+expr: '='  STRING {
+        scanner.print(driver.get_variable($2));
     }
-    | BEGIN_BLOCK {
-        //driver.set_variable($1, $3);
+    | STRING '=' STRING {
+        if (!scanner.blocked()) {
+            driver.set_variable($1, $3);
+        }
     }
-    | END_BLOCK {
+    | IF STRING {
+        auto value = driver.get_variable($2);
+        if (value.empty() || value == "0") {
+            scanner.block();
+        }
+    }
+    | UNLESS STRING {
+        auto value = driver.get_variable($2);
+        if (!value.empty() && value != "0") {
+            scanner.block();
+        }
+    }
+    | ELSE {
+        scanner.toggle();
+    }
+    | '=' UPPER '(' STRING ')' {
+        if (!scanner.blocked()) {
+            std::string value = driver.get_variable($4);
+            std::string upper;
 
+            transform(value.begin(), value.end(), std::back_inserter(upper), [](char c){ return std::toupper(c); });
+            scanner.print(upper);
+        }
+    }
+    | '/' {
+        scanner.unblock();
     }
     ;
 

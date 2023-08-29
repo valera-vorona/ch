@@ -21,22 +21,26 @@ using token = yy_template::Parser::token;
 %}
 
 %option debug
-    /* %option nodefault - don't use nodefault in this scanner to make the scanner pass through unknown tokens */
+%option nodefault
 %option yyclass="yy_options::Scanner"
 %option prefix="Template"
 %option noyywrap
 %option c++
 
-BEGIN  <<<
-END    >>>
+BEGIN   <<<
+END     >>>
 
+IF      if
+UNLESS  unless
+ELSE    else
+UPPER   upper
 DIGIT   [0-9]
 LETTER  [a-zA-Z_]
 SYM     ({DIGIT}|{LETTER})
 STRING  {LETTER}{SYM}*
 SPACE   [\t \r\n]
 
-%x parcing
+%x parsing
 %x comment
 
 %%
@@ -45,21 +49,28 @@ SPACE   [\t \r\n]
                         yylval = lval;
 %}
 
-<INITIAL>{BEGIN}        BEGIN(parcing);
-<INITIAL>\n             location->lines(); yyout << '\n';
+<INITIAL>{BEGIN}        BEGIN(parsing);
+<INITIAL>\n             location->lines(); print('\n');
+<INITIAL>.              print(*yytext);
 
 <comment>{END}          BEGIN(INITIAL);
 <comment>\n             location->lines();
 <comment>.              /* eat */
 
-<parcing>{END}          BEGIN(INITIAL);
-<parcing>#              BEGIN(comment);
-<parcing>\{             return token::BEGIN_BLOCK;
-<parcing>\}             return token::END_BLOCK;
-
-<parcing>{STRING}       yylval->emplace<std::string>(yytext); return token::STRING;
-<parcing>{SPACE}        /* pass */
-<parcing>.              yylval->emplace<std::string>(yytext); return token::UNKNOWN;
+<parsing>{END}          BEGIN(INITIAL);
+<parsing>{IF}           return token::IF;
+<parsing>{UNLESS}       return token::UNLESS;
+<parsing>{ELSE}         return token::ELSE;
+<parsing>{UPPER}        return token::UPPER;
+<parsing>#              BEGIN(comment);
+<parsing>\(             return '(';
+<parsing>\)             return ')';
+<parsing>=              return '=';
+<parsing>\/             return '/';
+<parsing>{STRING}       yylval->emplace<std::string>(yytext); return token::STRING;
+<parsing>{SPACE}        /* eat */
+<parsing>\n             location->lines();
+<parsing>.              yylval->emplace<std::string>(yytext); return token::UNKNOWN;
 
 %%
 

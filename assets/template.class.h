@@ -1,22 +1,21 @@
-<<< # cpp class header file template >>>
-#ifndef __<<<namespace>>>_<<<class>>>__
-#define __<<<namespace>>>_<<<class>>>__
+#ifndef __<<<= upper(namespace)>>>_<<<= upper(class)>>>__
+#define __<<<= upper(namespace)>>>_<<<= upper(class)>>>__
 
-namespace <<<namespace>>> {
-
-    class <<<class>>> {
+<<<if namespace >>>namespace <<< =namespace >>> {<<< / >>>
+<<<= const >>>
+    class <<<=class>>> {
     public:
 
-        <<<class>>>() {
+        <<<=class>>>() {
 
         }
 
-        virtual ~<<<class>>>() {
+        virtual ~<<<=class>>>() {
 
         }
     };
 
-}
+<<<if namespace >>>}<<< / >>>
 
-#undef /* __<<<namespace>>>_<<<class>>>__ */
+#undef /* __<<<= upper(namespace)>>>_<<<= upper(class)>>>__ */
 
