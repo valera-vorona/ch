@@ -103,6 +103,6 @@ expr: '='  STRING {
 void 
 yy_template::Parser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Options parser error: " << err_message << " at " << l << "\n";
+   std::cerr << "Template parser error: " << err_message << " at " << l << "\n";
 }
 

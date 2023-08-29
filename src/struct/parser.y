@@ -47,6 +47,7 @@
 %token <std::string> STRING 
 %token               DEFAULT 
 %token               PATH 
+%token               TEMPLATE
 
 %type <std::string> string
 
@@ -67,8 +68,11 @@ expr: WORD {
     } mb_default '{' exprs '}' {
         driver.pop_child();
     }
-    | PATH '=' string {
+    | PATH '=' string ';' {
         driver.get_current()->path = $3;
+    }
+    | TEMPLATE '=' string string ';' {
+        driver.get_current()->templates.push_back({$3, $4});
     }
     ;
 
@@ -87,6 +91,6 @@ mb_default: %empty
 void 
 yy_struct::Parser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Struct parsr error: " << err_message << " at " << l << "\n";
+   std::cerr << "Struct parser error: " << err_message << " at " << l << "\n";
 }
 

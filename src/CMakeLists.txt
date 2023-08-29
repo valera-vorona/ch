@@ -1,8 +1,8 @@
 project(ch VERSION 0.0.1 LANGUAGES CXX)
 
+add_subdirectory(template)
 add_subdirectory(struct)
 add_subdirectory(options)
-add_subdirectory(template)
 
 set(SOURCE_EXE
     main.cpp
@@ -20,11 +20,4 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # install part
-
-# install .so or .dll
-#install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
-#install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME} FILES_MATCHING PATTERN "*.h*")
-#install(DIRECTORY render/include/ DESTINATION include/${PROJECT_NAME} FILES_MATCHING PATTERN "*.h*")
-#install(DIRECTORY sprite/include/ DESTINATION include/${PROJECT_NAME} FILES_MATCHING PATTERN "*.h*")
-#install(DIRECTORY box/include/ DESTINATION include/${PROJECT_NAME} FILES_MATCHING PATTERN "*.h*")
 

@@ -20,9 +20,10 @@ namespace yy_template {
 
         /** 
         * parse - parse from a c++ input stream
-        * \param[in] is - std::istream&, valid input stream
+        * \param[in] in - std::istream&, input stream
+        * \param[in] out - std::ostream *, output stream, stdout by default
         */
-        void parse(std::istream &is);
+        void parse(std::istream &in, std::ostream *out = nullptr);
 
         void find(const std::string &key);
 

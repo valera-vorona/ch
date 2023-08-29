@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <list>
 #include <memory>
 
 namespace yy_struct {
@@ -10,6 +11,9 @@ namespace yy_struct {
 class Node {
 public:
     std::string path;
+
+    /// list of pairs: first - template file name, ext to add to the produced file
+    std::list<std::pair<std::string, std::string>> templates;
     bool _default = false;
 
 //private:

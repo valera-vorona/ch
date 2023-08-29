@@ -2,7 +2,7 @@
 
 namespace yy_struct {
 
-    Driver::Driver() {
+    Driver::Driver(const std::string &path_to_templates) : path_to_templates(path_to_templates) {
         stack.push(std::make_shared<Node>());
     }
 

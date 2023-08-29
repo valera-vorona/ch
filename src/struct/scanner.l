@@ -31,6 +31,7 @@ DIGIT   [0-9]
 LETTER  [a-zA-Z_]
 SYM     ({DIGIT}|{LETTER})
 WORD    {LETTER}{SYM}*
+STRING  ({SYM}|\/|\.)+
 
 %x comment
 
@@ -41,12 +42,15 @@ WORD    {LETTER}{SYM}*
 %}
 
 #                       BEGIN(comment); /* one line comment */
-<comment>.              { /* pass */ }
+<comment>.              /* eat */
 <comment>\n             location->lines(); BEGIN(INITIAL);
 _default                return token::DEFAULT;
 path                    return token::PATH;
+template                return token::TEMPLATE;
 {WORD}                  yylval->emplace<std::string>(yytext); return token::WORD;
+{STRING}                yylval->emplace<std::string>(yytext); return token::STRING;
 =                       return '=';
+;                       return ';';
 \{                      return '{';
 \}                      return '}';
 .                       /* pass */

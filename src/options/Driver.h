@@ -36,9 +36,9 @@ namespace yy_options {
 
         std::unique_ptr<Scanner> scanner;
         std::unique_ptr<Parser> parser;
-   
+public:
         std::shared_ptr<yy_struct::Node> structure;
-
+private:
         std::unordered_map<std::string, std::string> variables;
     };
 

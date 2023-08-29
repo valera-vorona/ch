@@ -14,7 +14,7 @@ namespace yy_struct {
 
     class Driver {
     public:
-        Driver();
+        Driver(const std::string &path_to_templates);
 
         ~Driver() = default;
 
@@ -41,6 +41,8 @@ namespace yy_struct {
 
         std::unique_ptr<Scanner> scanner;
         std::unique_ptr<Parser> parser;
+
+        const std::string path_to_templates;
     };
 
 }

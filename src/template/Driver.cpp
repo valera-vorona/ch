@@ -1,4 +1,5 @@
 #include "Driver.h"
+#include <fstream>
 
 namespace yy_template {
 
@@ -6,8 +7,8 @@ namespace yy_template {
 
     }
 
-    void Driver::parse(std::istream &stream) {
-        scanner = std::make_unique<Scanner>(&stream);
+    void Driver::parse(std::istream &in, std::ostream *out) {
+        scanner = std::make_unique<Scanner>(&in, out);
         parser = std::make_unique<Parser>(*scanner.get(), *this);
 
         if (parser->parse() != 0) {
