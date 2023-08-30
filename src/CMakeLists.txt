@@ -1,8 +1,8 @@
 project(ch VERSION 0.0.1 LANGUAGES CXX)
 
+add_subdirectory(options)
 add_subdirectory(template)
 add_subdirectory(struct)
-add_subdirectory(options)
 
 set(SOURCE_EXE
     main.cpp
