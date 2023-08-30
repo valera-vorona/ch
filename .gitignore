@@ -54,4 +54,4 @@ doc/
 *.swp
 
 #Misc
-
+.vscode/
