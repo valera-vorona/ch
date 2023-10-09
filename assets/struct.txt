@@ -1,4 +1,4 @@
-# This is the main structure file for ch unility
+# This is the main structure file for ch utility
 
 cpp _default {
     create {
