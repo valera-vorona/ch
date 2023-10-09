@@ -65,3 +65,27 @@ Options:
 Variables:
 * **name** - class name.
 * **namespace** - namespace name.
+
+## Editing template files
+After the installation ``ch`` will create a directory ``.ch`` at your home dir. In this directory you will see:
+* ``struct.txt`` file, which describes the overall structure of the generated files;
+* ``templates`` directory with the templates themselves.
+
+You can edit these files to make your own templates of any programming languages or other text based projects there.
+A better practice is that you copy ``.ch`` directory whenever you develop your project and edit the files there, as when you
+reinstall ``.ch`` this directory will be rewritten to default.
+
+``ch`` looks for the ``.ch`` directory beginning with the current directory, up to the root directory (excluding the root directory itself),
+then it tries to find ``.ch`` in the directories set at CH_HOME, HOME environment variables. It fails to go further with an error message if doesn't find ``.ch`` directory after the above attempts.
+
+### struct.txt
+
+This file describes the overall structure of the generated files.
+
+  *further information goes here.*
+
+### template files
+
+These files hold the templates which ``ch`` generates code from.
+
+  *further information goes here.*
