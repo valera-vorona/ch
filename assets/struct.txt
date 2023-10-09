@@ -4,8 +4,8 @@ cpp _default {
     create {
         class {
             path = not_implemented;
-            template = /home/valeri/.ch/templates/template.class.h .h;
-            template  = /home/valeri/.ch/templates/template.class.cpp .cpp;
+            template = templates/template.class.h .h;
+            template  = templates/template.class.cpp .cpp;
         }
     }
 }

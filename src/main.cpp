@@ -27,9 +27,24 @@ int main(int argc, char *argv[]) {
         }
 
         // setting up ch_home (the data files home dir)
-        std::string ch_home = get_env("CH_HOME");
+        std::string ch_home;
+
+        // first finding ".ch" from the current directory and up to the root (excl. root itself) 
+        auto pwd = std::filesystem::current_path();
+        while (pwd.has_relative_path()) {
+            if (std::filesystem::exists(pwd / ".ch")) {
+                ch_home = (pwd / ".ch").string();
+                break;
+            }
+            pwd = pwd.parent_path();
+        }
+
         if (ch_home.empty()) {
-            ch_home = get_env("HOME") + "/.ch";
+            // Check CH_HOME and HOME envs
+            ch_home = get_env("CH_HOME");
+            if (ch_home.empty()) {
+                ch_home = get_env("HOME") + "/.ch";
+            }
         }
 
         ch_home += '/';
@@ -60,7 +75,9 @@ int main(int argc, char *argv[]) {
 
         // generating code with yy_template::Driver.parse()
         for (auto f: options_driver.structure->templates) {
-            std::ifstream ftemplate(f.first);
+            // prepending absolute template file path if required
+            std::string templatefname = std::filesystem::path(f.first).is_absolute() ? f.first : ch_home + f.first;
+            std::ifstream ftemplate(templatefname);
             if (!ftemplate.is_open()) {
                 throw std::logic_error("Can't find template file: \"" + f.first + '"');
             }
@@ -70,7 +87,7 @@ int main(int argc, char *argv[]) {
 
             //check if file with this name already exists
             if (std::filesystem::exists(oname) && options_driver.get_variable("--force").empty()) {
-                std::cerr << "file \"" << oname << "\" exists, use option --force=t to overwrite it!" << std::endl;
+                std::cerr << "File \"" << oname << "\" exists, use option --force=t to overwrite it!" << std::endl;
                 ++bad;
             } else {
                 // write

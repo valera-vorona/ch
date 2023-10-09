@@ -13,7 +13,7 @@ set(SOURCE_EXE
     ${FLEX_${PROJECT_NAME}_scanner_OUTPUTS}
 )
 
-add_library(${PROJECT_NAME} ${SOURCE_EXE})
+add_library(${PROJECT_NAME} STATIC ${SOURCE_EXE})
 
 target_include_directories(${PROJECT_NAME} PRIVATE . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/..)
 
